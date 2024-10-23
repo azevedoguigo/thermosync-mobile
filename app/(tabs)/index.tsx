@@ -1,10 +1,10 @@
 import axios from "axios";
 import { BlurView } from "expo-blur";
-import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ImageBackground, Text, View } from "react-native";
+import * as SecureStore from 'expo-secure-store';
 
-// Interface para a resposta completa da API
 export interface WeatherData {
   base: string;
   clouds: Clouds;
@@ -67,9 +67,11 @@ export default function HomeScreen() {
   const [temperature, setTemperature] = useState<String>();
   const [isConnected, setIsConnected] = useState(false);
 
+  const router = useRouter();
+
   const [weather, setWeather] = useState<WeatherData>();
 
-  const apiKey = "";
+  const apiKey = "4bea4613a324f1d35d031827f9ad4a1a";
   const city = 'Maceió';
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
@@ -86,21 +88,31 @@ export default function HomeScreen() {
   
 
   useEffect(() => {
-    const websocket = new WebSocket("ws://192.168.0.108:3000/ws");
-
-    websocket.onopen = () => {
-      console.log("Opened websocket connection!");
-      setIsConnected(true);
+    const checkAuthentication = async () => {
+      const token = await SecureStore.getItemAsync("token");
+      if (!token) {
+        router.push("/login");
+        return;
+      }
     };
 
-    websocket.onmessage = (e) => {
-      const wsData = JSON.parse(e.data);
-      setTemperature(wsData.temperature);
-    };
+    const connectToWebsocket = () => {
+      const websocket = new WebSocket("ws://192.168.0.108:3000/ws");
 
-    websocket.onclose = () => {
-      console.log("Closed websocket connection!");
-      setIsConnected(false);
+      websocket.onopen = () => {
+        console.log("Opened websocket connection!");
+        setIsConnected(true);
+      };
+
+      websocket.onmessage = (e) => {
+        const wsData = JSON.parse(e.data);
+        setTemperature(wsData.temperature);
+      };
+
+      websocket.onclose = () => {
+        console.log("Closed websocket connection!");
+        setIsConnected(false);
+      };
     };
 
     const fecthWeater = async () => {
@@ -112,6 +124,8 @@ export default function HomeScreen() {
       }
     };
 
+    checkAuthentication();
+    connectToWebsocket();
     fecthWeater();
   }, []);
 
@@ -121,7 +135,6 @@ export default function HomeScreen() {
       resizeMode="cover"
       className="flex justify-center items-center h-full"
     >
-      
       <View className="rounded-full p-4 border-4 border-slate-300">
         <BlurView intensity={100} className="flex items-center justify-center rounded-full p-4 h-56 w-56 overflow-hidden">
           <Text className="text-4xl text-gray-700">
