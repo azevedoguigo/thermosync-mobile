@@ -1,7 +1,8 @@
 import axios from "axios";
+import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { ImageBackground, Text, View } from "react-native";
 
 // Interface para a resposta completa da API
 export interface WeatherData {
@@ -115,9 +116,14 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <View className="flex justify-center items-center h-full">
-      <LinearGradient colors={["#2563EB", "#1E40AF"]} className="rounded-full p-4">
-        <View className="flex items-center justify-center rounded-full p-4 bg-slate-300 h-56 w-56">
+    <ImageBackground 
+      source={require("../../assets/images/bg-clouds.jpg")}
+      resizeMode="cover"
+      className="flex justify-center items-center h-full"
+    >
+      
+      <View className="rounded-full p-4 border-4 border-slate-300">
+        <BlurView intensity={100} className="flex items-center justify-center rounded-full p-4 h-56 w-56 overflow-hidden">
           <Text className="text-4xl text-gray-700">
             {temperature ? temperature : "--"} ºC
           </Text>
@@ -126,17 +132,17 @@ export default function HomeScreen() {
           >
             Ambient temperature
           </Text>
-        </View>
-      </LinearGradient>
+        </BlurView>
+      </View>
 
       <View className="items-start w-full mt-16 mb-2">
-        <Text className="ml-6">Open Weather</Text>
+        <Text className="ml-6 text-xl">Open Weather</Text>
       </View>
 
       <View className="flex-row gap-4">
-        <LinearGradient 
-          colors={["#818cf8", "#6366f1"]}
-          className="justify-center items-center bg-indigo-600 rounded-2xl w-44 h-20 p-2"
+        <BlurView
+          intensity={118}
+          className="justify-center items-center rounded-2xl w-44 h-20 p-2"
         >
           <Text 
             className="text-2xl text-zinc-800"
@@ -144,11 +150,11 @@ export default function HomeScreen() {
             {weather?.main.temp} ºC
           </Text>
           <Text className="text-zinc-800 text-lg">Actual temperature</Text>
-        </LinearGradient>
+        </BlurView>
 
-        <LinearGradient 
-          colors={["#818cf8", "#6366f1"]}
-          className="justify-center items-center bg-indigo-600 rounded-2xl w-44 h-20 p-2"
+        <BlurView 
+          intensity={118}
+          className="justify-center items-center rounded-2xl w-44 h-20 p-2"
         >
           <Text 
             className="text-2xl text-zinc-800"
@@ -156,13 +162,13 @@ export default function HomeScreen() {
             {weather?.main.humidity}%
           </Text>
           <Text className="text-zinc-800 text-lg">Actual humidity</Text>
-        </LinearGradient>
+        </BlurView>
       </View>
 
       <View className="flex-row gap-4 mt-1">
-        <LinearGradient 
-          colors={["#818cf8", "#6366f1"]}
-          className="justify-center items-center bg-indigo-600 rounded-2xl w-44 h-20 p-2"
+        <BlurView 
+          intensity={118}
+          className="justify-center items-center rounded-2xl w-44 h-20 p-2"
         >
           <Text 
             className="text-2xl text-zinc-800"
@@ -170,11 +176,11 @@ export default function HomeScreen() {
             {weather?.main.pressure} mb
           </Text>
           <Text className="text-zinc-800 text-lg">Pressure</Text>
-        </LinearGradient>
+        </BlurView>
 
-        <LinearGradient 
-          colors={["#818cf8", "#6366f1"]}
-          className="justify-center items-center bg-indigo-600 rounded-2xl w-44 h-20 p-2"
+        <BlurView 
+          intensity={118}
+          className="justify-center items-center rounded-2xl w-44 h-20 p-2"
         >
           <Text 
             className="text-2xl text-zinc-800"
@@ -182,13 +188,13 @@ export default function HomeScreen() {
             {weather?.wind.speed} km/h
           </Text>
           <Text className="text-zinc-800 text-lg">Wind speed</Text>
-        </LinearGradient>
+        </BlurView>
       </View>
 
       <View className="flex-row gap-4 mt-1">
-        <LinearGradient 
-          colors={["#818cf8", "#6366f1"]}
-          className="justify-center items-center bg-indigo-600 rounded-2xl w-44 h-20 p-2"
+        <BlurView 
+          intensity={118}
+          className="justify-center items-center rounded-2xl w-44 h-20 p-2"
         >
           <Text 
             className="text-2xl text-zinc-800"
@@ -196,11 +202,11 @@ export default function HomeScreen() {
             {convertTimestampToTime(weather?.sys.sunrise!, weather?.timezone!)}
           </Text>
           <Text className="text-zinc-800 text-lg">Sunrise</Text>
-        </LinearGradient>
+        </BlurView>
 
-        <LinearGradient 
-          colors={["#818cf8", "#6366f1"]}
-          className="justify-center items-center bg-indigo-600 rounded-2xl w-44 h-20 p-2"
+        <BlurView 
+          intensity={118}
+          className="justify-cente items-center rounded-2xl w-44 h-20 p-2"
         >
           <Text 
             className="text-2xl text-zinc-800"
@@ -208,8 +214,8 @@ export default function HomeScreen() {
             {convertTimestampToTime(weather?.sys.sunset!, weather?.timezone!)}
           </Text>
           <Text className="text-zinc-800 text-lg">Sunset</Text>
-        </LinearGradient>
+        </BlurView>
       </View>
-    </View>
+    </ImageBackground>
   );
 }
