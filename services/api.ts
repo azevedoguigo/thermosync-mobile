@@ -3,8 +3,8 @@ import axios from "axios";
 const API_URL = "http://192.168.0.108:3000";
 
 type RegisterDTO = {
-  firstName: string
-  lastName: string
+  first_name: string
+  last_name: string
   email: string
   password: string
 }
