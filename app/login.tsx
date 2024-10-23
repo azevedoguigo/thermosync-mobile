@@ -60,7 +60,7 @@ export default function Login() {
         <View className="flex-row gap-2 mt-1">
           <Text className="text-zinc-900">Don't have account?</Text>
           <Link 
-            href={"/_sitemap"}
+            href={"/register"}
             className="text-blue-700 font-medium"
           >
             Register Now
